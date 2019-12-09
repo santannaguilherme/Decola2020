@@ -1,0 +1,13 @@
+
+
+.center {
+	height: 400px;
+	align-items: center;
+}
+
+
+
+.container {
+	margin: 0 auto;
+	display: flex;
+}
