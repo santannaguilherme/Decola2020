@@ -1,51 +1,121 @@
-.wrap{
-    flex-wrap: wrap;
+.row-wrap {
+  flex-flow: row wrap;
+}
+.space-around {
+  align-content: space-around;
+}
+.baseline {
+  align-items: baseline;
 }
 
-.container{
-    max-width: 500px;
-    margin: 0 auto;
-    display: flex;
-    border: 10px transparent;
+.flex-start {
+  align-items: flex-start;
 }
 
-.item{
-    flex-grow: 1;
-    margin: 5px;
-    text-align:  left;
-    background: tomato;
+.column {
+  flex-direction: column;
+}
+
+/* Flex Container */
+.container {
+  max-width: 450px;
+  margin: 10px;
+  display: flex;
+}
+
+.container1 {
+  max-width: 1500px;
+  margin: 0;
+  display: flex;
+}
+/* Flex Item */
+.item {
+  /* O flex: 1; é necessário para que cada item se expanda ocupando o tamanho máximo do container. */
+  flex: 1;
+  text-align: left;
+  font-size: 1.5em;
+}
+
+.item2 {
+  flex: 1;
+  text-align: left;
+  font-size: 1.5em;
+  height: fit-content;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 h1 {
-    font-family: Helvetica;
-	text-align: left;
-	margin: 0 0 10px 10px;
-	font-size: 3em;
-	font-weight: normal;
+  text-align: left;
+  font-weight: bold;
+  font-family: Arial;
 }
 
-h2{
-    font-family: Helvetica;
-    text-align: left;
-    font-size: 2em;
-    margin: 20px 0 0 0 ;
+.container-secundario {
+  max-width: 600px;
+  margin: 10px;
+  display: flex;
 }
 
-h3{
-    color: red;
-    font-family: Helvetica;
-    text-align: left;
-    font-size: 1em;   
+.container-imagem {
+  width: 110px;
+  height: 80px;
+  display: flex;
 }
 
-h4{
-    font-family: Helvetica;
-    text-align: left;
-    font-size: 1.75em;   
+.container-titulo {
+  display: flex;
 }
 
-h5{
-    font-family: Helvetica;
-    text-align: left;
-    font-size: 1.5em;   
+.container-subtitulo {
+  display: flex;
+}
+
+.container-manchete {
+  text-align: left;
+  height: fit-content;
+}
+
+h3 {
+  text-align: left;
+  line-height: 1;
+  color: rgb(196, 23, 12);
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  font-size: x-large;
+  text-transform: uppercase;
+}
+h4 {
+  text-align: left;
+  line-height: 1;
+  color: rgb(85, 85, 85);
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  font-size: medium;
+}
+
+.imagem-principal {
+  width: 400px;
+  height: 250px;
+  display: flex;
+}
+
+.imagem-principal::after {
+  content: "MEIO AMBIENTE";
+  width: 200px;
+  height: 40px;
+  background: rgb(196, 23, 12);
+  display: block;
+}
+
+h1::before {
+  content: "";
+  width: 67px;
+  height: 4px;
+  background: rgb(196, 23, 12);
+  display: block;
 }
