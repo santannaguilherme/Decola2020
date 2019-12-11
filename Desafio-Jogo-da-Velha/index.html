@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script type="text/javascript" src="js/TicTacToe.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <title>Tic Tac Toe</title>
+  </head>
+  <body>
+    <div class="background">
+      <div class="container">
+        <div class="painel">
+          <div class="player-name">Jogador X</div>
+          <div class="player-score" id="placar-01">0</div>
+        </div>
+        <div id="tabuleiro" class="tabuleiro">
+          <div id="linha" class="linha row">
+            <div id="a1" class="peca bottom right"></div>
+            <div id="b1" class="peca bottom right left"></div>
+            <div id="c1" class="peca bottom left"></div>
+          </div>
+          <div id="linha" class="linha row">
+            <div id="a2" class="peca top bottom right"></div>
+            <div id="b2" class="peca all"></div>
+            <div id="c2" class="peca top bottom left"></div>
+          </div>
+          <div id="linha" class="linha row">
+            <div id="a3" class="peca top right"></div>
+            <div id="b3" class="peca top right left"></div>
+            <div id="c3" class="peca top left"></div>
+          </div>
+        </div>
+        <div class="painel">
+          <div class="player-name">Jogador O</div>
+          <div class="player-score" id="placar-02">0</div>
+        </div>
+      </div>
+      <div class="container">
+      <div class="reset" id="clear">Limpar Placar</div>
+      <div class="reset" id="reset">Reiniciar Partida</div>
+      </div>
+    </div>
+  </body>
+</html>
