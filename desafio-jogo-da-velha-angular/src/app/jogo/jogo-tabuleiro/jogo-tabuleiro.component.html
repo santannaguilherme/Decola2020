@@ -1,0 +1,5 @@
+<section class="container">
+<div  *ngFor="let quad of pos; let i = index">
+<app-jogo-quadrado [campo] = "pos[i]" [jogador]="jog" (click)="onClick(i)"></app-jogo-quadrado>
+</div>
+</section>
