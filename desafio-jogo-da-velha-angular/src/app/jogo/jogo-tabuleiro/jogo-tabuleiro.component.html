@@ -9,7 +9,7 @@
       <app-jogo-placar [jogador]="'O'" [pontos]="placarO"></app-jogo-placar>
     </div>
     <div class="container">
-      <div class="reset">Limpar Placar</div>
+      <div class="reset" (click)="reset()">Limpar Placar</div>
       <div class="reset">Reiniciar Partida</div>
     </div>
   </div>
