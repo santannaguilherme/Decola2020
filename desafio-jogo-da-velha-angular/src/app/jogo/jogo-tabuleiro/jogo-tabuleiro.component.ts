@@ -10,14 +10,10 @@ export class JogoTabuleiroComponent implements OnInit {
   quad: any[];
   vencedor: string;
   service: JogoService;
-  placarX: number;
-  placarO: number;
 
   constructor(gameService: JogoService) {
     this.service = gameService;
     this.quad = gameService.quad;
-    this.placarO = gameService.placarO;
-    this.placarX = gameService.placarX;
     this.vencedor = gameService.vencedor;
   }
 
@@ -25,9 +21,14 @@ export class JogoTabuleiroComponent implements OnInit {
 
   jogada(index: number) {
     this.service.jogada(index);
+    console.log(this.service.placarO, this.service.placarX);
   }
 
-  reset(){
+  reiniciar() {
     this.service.restartBoard();
+  }
+
+  reset() {
+    this.service.restartGame();
   }
 }

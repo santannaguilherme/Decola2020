@@ -5,9 +5,10 @@ export class JogoService {
   placarX: number = 0;
   placarO: number = 0;
   quad: any[] = Array(9).fill(null);
-  xProximo: boolean;
+  xProximo: boolean = true;
   vencedor: string;
-  jogador: string;
+  jogador: string = "X";
+  teste: number = 0;
 
   jogada(index: number) {
     this.jogador = this.xProximo ? "X" : "O";
@@ -18,17 +19,21 @@ export class JogoService {
 
     this.vencedor = this.verificaVencedor();
     if (this.vencedor != null) {
-      alert("Jogado " + this.vencedor + " ganhou");
       if (this.vencedor == "X") {
         this.placarX++;
-      } else {
+        alert("Jogado " + this.vencedor + " ganhou");
+      } else if (this.vencedor == "O") {
         this.placarO++;
+        alert("Jogado " + this.vencedor + " ganhou");
+      } else {
+        alert(this.vencedor);
       }
       this.restartBoard();
     }
   }
 
   verificaVencedor() {
+    this.teste++;
     const matrizVitoria = [
       [0, 1, 2],
       [0, 3, 6],
@@ -48,21 +53,28 @@ export class JogoService {
         this.quad[a] === this.quad[c]
       ) {
         return this.quad[a];
+      } else {
       }
+    }
+    console.log(this.teste);
+    if (this.teste >= 9) {
+      return "Empate";
     }
     return null;
   }
 
-  restartGame(){
+  restartGame() {
     this.placarO = 0;
     this.placarX = 0;
     this.restartBoard();
   }
 
-  restartBoard(){
+  restartBoard() {
     this.quad.fill(null);
     this.xProximo = true;
     this.vencedor = null;
     this.jogador = "X";
+    this.teste = 0;
+    console.log("clicou");
   }
 }

@@ -1,16 +1,26 @@
 <div class="background">
   <div class="containerBack">
     <div class="container">
-      <app-jogo-placar [jogador]="'X'" [pontos]="placarX"></app-jogo-placar>
+      <app-jogo-placar
+        [jogador]="'X'"
+        [pontos]="service.placarX"
+      ></app-jogo-placar>
       <section class="tabuleiro">
-        <app-jogo-quadrado *ngFor="let quadrado of quad; let i = index" [campo]="quadrado" (click)="jogada(i)">
+        <app-jogo-quadrado
+          *ngFor="let quadrado of quad; let i = index"
+          [campo]="quadrado"
+          (click)="jogada(i)"
+        >
         </app-jogo-quadrado>
       </section>
-      <app-jogo-placar [jogador]="'O'" [pontos]="placarO"></app-jogo-placar>
+      <app-jogo-placar
+        [jogador]="'O'"
+        [pontos]="service.placarO"
+      ></app-jogo-placar>
     </div>
     <div class="container">
       <div class="reset" (click)="reset()">Limpar Placar</div>
-      <div class="reset">Reiniciar Partida</div>
+      <div class="reset" (click)="reiniciar()">Reiniciar Partida</div>
     </div>
   </div>
 </div>
