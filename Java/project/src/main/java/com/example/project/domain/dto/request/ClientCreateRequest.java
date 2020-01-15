@@ -25,6 +25,6 @@ public class ClientCreateRequest {
     @Phone(message = "phone is invalid")
     private String phone;
 
-    @Datas()
+    @Datas
     private Date data;
 }

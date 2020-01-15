@@ -10,11 +10,14 @@ public class DateValidator implements ConstraintValidator<Datas, Date> {
 
     @Override
     public boolean isValid(Date value, ConstraintValidatorContext context) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(value);
-        int d = cal.get(Calendar.DAY_OF_MONTH);
-        Calendar cale = Calendar.getInstance();
-        int dayOfMonth = cale.get(Calendar.DAY_OF_MONTH);
-        return value != null && ((d < dayOfMonth + 7) && (d > dayOfMonth - 7));
+        Date hoje = new Date();
+        int dias = 7*24*60*60*1000;
+
+        Date limiteInferior = new Date(hoje.getTime()-dias);
+        Date limiteSuperior = new Date(hoje.getTime()+dias);
+        
+        return value != null && 
+                value.getTime()>= limiteInferior.getTime() &&
+                value.getTime() <= limiteSuperior.getTime();
     }
 }
