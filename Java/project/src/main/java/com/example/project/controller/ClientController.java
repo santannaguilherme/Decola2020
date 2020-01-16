@@ -13,9 +13,11 @@ import com.example.project.service.ClientService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,9 +36,14 @@ public class ClientController {
 	}
 
 	@GetMapping(value = "/{id}")
-    public ResponseEntity<ClientResponse> getById(@PathVariable Integer id) {
-         return ResponseEntity.ok(mapper.toDto(clientService.findById(id))) ;
-    }
+	public ResponseEntity<ClientResponse> getById(@PathVariable Integer id) {
+		return ResponseEntity.ok(mapper.toDto(clientService.findById(id)));
+	}
+
+	@DeleteMapping(value = "/{id}")
+	public void deletById(@PathVariable Integer id) {
+		 clientService.deletClient(id);
+	}
 
 	@GetMapping
 	public ResponseEntity<List<ClientResponse>> list() {
@@ -50,6 +57,13 @@ public class ClientController {
 
 		Client client = clientService.createClient(mapper.fromDto(model));
 
+		return ResponseEntity.ok(mapper.toDto(client));
+	}
+
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<ClientResponse> updateById(@PathVariable Integer id,
+			@Valid @RequestBody ClientCreateRequest model) {
+		Client client = clientService.updateClient(mapper.fromDto(model), id);
 		return ResponseEntity.ok(mapper.toDto(client));
 	}
 

@@ -31,6 +31,19 @@ public class ClientService {
 	public Client findById(Integer id) {
         Optional<Client> client = clientRepository.findById(id);
         return client.orElseThrow(() -> new DataNotFoundException("Client Not found"));
-	}
+    }
+    
+    public void deletClient(Integer id)throws DataNotFoundException{
+        findById(id);
+        clientRepository.deleteById(id);
+    }
+
+    public Client updateClient(Client model,Integer id) throws DataNotFoundException{
+        Client c = findById(id);
+        c.setName(model.getName());
+        c.setPhone(model.getPhone());
+        return clientRepository.save(c);
+        
+    }
 
 }
