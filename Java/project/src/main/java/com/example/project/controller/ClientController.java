@@ -13,6 +13,7 @@ import com.example.project.service.ClientService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,7 +43,7 @@ public class ClientController {
 
 	@DeleteMapping(value = "/{id}")
 	public void deletById(@PathVariable Integer id) {
-		 clientService.deletClient(id);
+		clientService.deletClient(id);
 	}
 
 	@GetMapping
@@ -65,6 +66,18 @@ public class ClientController {
 			@Valid @RequestBody ClientCreateRequest model) {
 		Client client = clientService.updateClient(mapper.fromDto(model), id);
 		return ResponseEntity.ok(mapper.toDto(client));
+	}
+
+	@GetMapping(value = "/distinct")
+	public ResponseEntity<List<String>> listDistinct() {
+		return ResponseEntity.ok(clientService.listDistinct());
+	}
+
+	@GetMapping(value = "/phone")
+	public ResponseEntity<List<ClientResponse>> list(@RequestParam("q") String phone) {
+		return ResponseEntity.ok(clientService.listByPhone(phone).stream() //
+				.map(x -> mapper.toDto(x)) //
+				.collect(Collectors.toList()));
 	}
 
 }

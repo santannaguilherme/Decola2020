@@ -45,5 +45,12 @@ public class ClientService {
         return clientRepository.save(c);
         
     }
+    public  List<String> listDistinct() {
+        return clientRepository.listDistinct();
+    }
+    
+    public  List<Client> listByPhone(String phone) {
+        return clientRepository.findByPhone(phone);
+	}
 
 }
