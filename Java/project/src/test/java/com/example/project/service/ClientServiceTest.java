@@ -122,9 +122,9 @@ public class ClientServiceTest {
         List<Client> list = new ArrayList<>();
         list.add(entity);
         when(repositoryMock.findByPhone(anyString())).thenReturn(list);
-        
+
         List<Client> c = service.listByPhone(anyString());
-        
+
         // Client test = verify(repositoryMock, times(1)).save(entity);
         assertNotNull("Array não deve ser nulo", c);
         assertEquals("Array deve ser de tamanho 1", 1, c.size());
@@ -135,9 +135,9 @@ public class ClientServiceTest {
         List<String> list = new ArrayList<>();
         list.add(entity.getName());
         when(repositoryMock.listDistinct()).thenReturn(list);
-        
+
         List<String> c = service.listDistinct();
-        
+
         // Client test = verify(repositoryMock, times(1)).save(entity);
         assertNotNull("Array não deve ser nulo", c);
         assertEquals("Array deve ser de tamanho 1", 1, c.size());
