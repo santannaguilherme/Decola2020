@@ -9,7 +9,6 @@ import com.example.project.domain.dto.request.ClientCreateRequest;
 import com.example.project.domain.dto.request.UserCreateRequestTest;
 import com.example.project.domain.dto.response.ClientResponse;
 import com.example.project.domain.entities.Client;
-import com.example.project.domain.entities.ClientOrder;
 import com.example.project.repository.ClientRepository;
 import com.example.project.security.WithSecurity;
 import com.example.project.service.SiteUserService;
