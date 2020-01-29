@@ -19,6 +19,6 @@ Desenvolvimento de um jogo da velha uilizando o framework angular para a camada 
 
 Aulas praticas de sobre o Spring Boot
 - Rotas
-- Hybernate
+- Hibernate
 - Spring Security
 - Spring Test
