@@ -2,6 +2,7 @@ package com.example.project.controller;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import com.example.project.utils.SiteRoles;
 
 import javax.validation.Valid;
 
@@ -11,6 +12,7 @@ import com.example.project.domain.entities.Client;
 import com.example.project.domain.mapper.ClientMapper;
 import com.example.project.service.ClientService;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,6 +38,7 @@ public class ClientController {
 		this.mapper = clientMapper;
 	}
 
+	@Secured({SiteRoles.APP_USER})
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ClientResponse> getById(@PathVariable Integer id) {
 		return ResponseEntity.ok(mapper.toDto(clientService.findById(id)));
@@ -46,6 +49,7 @@ public class ClientController {
 		clientService.deletClient(id);
 	}
 
+	@Secured({SiteRoles.APP_USER})
 	@GetMapping
 	public ResponseEntity<List<ClientResponse>> list() {
 		return ResponseEntity.ok(clientService.listClient().stream() //
@@ -53,6 +57,7 @@ public class ClientController {
 				.collect(Collectors.toList()));
 	}
 
+	@Secured({SiteRoles.APP_ADMIN})
 	@PostMapping
 	public ResponseEntity<ClientResponse> post(@Valid @RequestBody ClientCreateRequest model) {
 
@@ -61,6 +66,7 @@ public class ClientController {
 		return ResponseEntity.ok(mapper.toDto(client));
 	}
 
+	@Secured({SiteRoles.APP_ADMIN})
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<ClientResponse> updateById(@PathVariable Integer id,
 			@Valid @RequestBody ClientCreateRequest model) {
@@ -68,11 +74,13 @@ public class ClientController {
 		return ResponseEntity.ok(mapper.toDto(client));
 	}
 
+	@Secured({SiteRoles.APP_USER})
 	@GetMapping(value = "/distinct")
 	public ResponseEntity<List<String>> listDistinct() {
 		return ResponseEntity.ok(clientService.listDistinct());
 	}
 
+	@Secured({SiteRoles.APP_USER})
 	@GetMapping(value = "/phone")
 	public ResponseEntity<List<ClientResponse>> list(@RequestParam("q") String phone) {
 		return ResponseEntity.ok(clientService.listByPhone(phone).stream() //

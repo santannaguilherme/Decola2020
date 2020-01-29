@@ -6,10 +6,17 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Date;
 
 import com.example.project.domain.dto.request.ClientCreateRequest;
+import com.example.project.domain.dto.request.UserCreateRequestTest;
 import com.example.project.domain.dto.response.ClientResponse;
+import com.example.project.domain.entities.Client;
+import com.example.project.domain.entities.ClientOrder;
+import com.example.project.repository.ClientRepository;
+import com.example.project.security.WithSecurity;
+import com.example.project.service.SiteUserService;
 import com.example.project.utils.IntegrationTestConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,72 +42,100 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @ActiveProfiles("test")
 public class ClientControllerTestIntTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+        @Autowired
+        private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper mapper;
+        @Autowired
+        private ObjectMapper mapper;
+        @Autowired
+        private ClientRepository clientRepository;
 
-    @Test
-    public void should_getEmptyList_whenGetEmpty() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/clients")) // Executa
+        @Autowired
+        private SiteUserService service;
+    
+        private static WithSecurity withSecurity;
+    
+        @Before
+        public void getToken() throws Exception {
+            if (ClientControllerTestIntTest.withSecurity == null) {
+                withSecurity = new WithSecurity(service, UserCreateRequestTest.usrAdminValidEmail);
+            }
+        }
+
+
+
+        @Test 
+        public void should_getEmptyList_whenGetEmpty() throws Exception {
+                mockMvc.perform(withSecurity.AddToken(MockMvcRequestBuilders.get("/clients"))) // Executa
+                                .andDo(MockMvcResultHandlers.print()) // pega resultado
+                                .andExpect(MockMvcResultMatchers.status().isOk()) // faz a validação.
+                                .andExpect(MockMvcResultMatchers.content()
+                                                .contentType(MediaType.APPLICATION_JSON_UTF8));
+        }
+
+        @Test
+        public void should_get404_whenGetById() throws Exception {
+                mockMvc.perform(withSecurity.AddToken(MockMvcRequestBuilders.get("/clients/1"))) // Executa
+                                .andDo(MockMvcResultHandlers.print()) // pega resultado
+                                .andExpect(MockMvcResultMatchers.status().isNotFound()); // faz a validação.
+        }
+
+        @Test
+        public void should_return400_whenPostInvalid() throws Exception {
+                // given
+                ClientCreateRequest request = ClientCreateRequest.builder()//
+                                .name("Name").phone("phone").build();
+
+                // when + then
+                mockMvc.perform(withSecurity.AddToken(MockMvcRequestBuilders.post("/clients")) //
+                                .contentType(MediaType.APPLICATION_JSON) //
+                                .content(mapper.writeValueAsString(request))) // Executa
+                                .andDo(MockMvcResultHandlers.print()) // pega resultado
+                                .andExpect(MockMvcResultMatchers.status().isBadRequest()); // faz a validação.
+        }
+
+        @Test
+        public void should_return400_whenPostInvalid2() throws Exception {
+                // given
+                ClientCreateRequest request = ClientCreateRequest.builder()//
+                                .name(null).phone("phone").build();
+
+                // when + then
+                mockMvc.perform(withSecurity.AddToken(MockMvcRequestBuilders.post("/clients")) //
+                                .contentType(MediaType.APPLICATION_JSON) //
+                                .content(mapper.writeValueAsString(request))) // Executa
+                                .andDo(MockMvcResultHandlers.print()) // pega resultado
+                                .andExpect(MockMvcResultMatchers.status().isBadRequest()); // faz a validação.
+        }
+
+        @Test
+        public void should_create_whenPostValid() throws Exception {
+                // given
+                ClientCreateRequest request = ClientCreateRequest.builder() //
+                                .name("Nome").phone("987654321").data(new Date()).build();
+
+                // when + then
+                MvcResult result = mockMvc.perform(withSecurity.AddToken(MockMvcRequestBuilders.post("/clients")) //
+                                .contentType(MediaType.APPLICATION_JSON) //
+                                .content(mapper.writeValueAsString(request))) // Executa
+                                .andDo(MockMvcResultHandlers.print()) // pega resultado
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn(); // faz a validação.
+
+                ClientResponse response = mapper.readValue(result.getResponse().getContentAsString(),
+                                ClientResponse.class);
+
+                assertNotNull(response.getId());
+                assertEquals(request.getName(), response.getName());
+                assertEquals(request.getPhone(), response.getPhone());
+        }
+
+        @Test
+        public void should_get_whenGetById() throws Exception {
+                Client model = Client.builder().name("nome").phone("987654321").build();
+        clientRepository.saveAndFlush(model);
+
+        mockMvc.perform(withSecurity.AddToken(MockMvcRequestBuilders.get("/clients/"+model.getId()))) // Executa
                 .andDo(MockMvcResultHandlers.print()) // pega resultado
-                .andExpect(MockMvcResultMatchers.status().isOk()) // faz a validação.
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8));
-    }
-
-    @Test
-    public void should_get404_whenGetById() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/clients/1")) // Executa
-                .andDo(MockMvcResultHandlers.print()) // pega resultado
-                .andExpect(MockMvcResultMatchers.status().isNotFound()); // faz a validação.
-    }
-
-    @Test
-    public void should_return403_whenPostInvalid() throws Exception {
-        // given
-        ClientCreateRequest request = ClientCreateRequest.builder()//
-                .name("Name").phone("phone").build();
-
-        // when + then
-        mockMvc.perform(MockMvcRequestBuilders.post("/clients") //
-                .contentType(MediaType.APPLICATION_JSON) //
-                .content(mapper.writeValueAsString(request))) // Executa
-                .andDo(MockMvcResultHandlers.print()) // pega resultado
-                .andExpect(MockMvcResultMatchers.status().isBadRequest()); // faz a validação.
-    }
-
-    @Test
-    public void should_return403_whenPostInvalid2() throws Exception {
-        // given
-        ClientCreateRequest request = ClientCreateRequest.builder()//
-                .name(null).phone("phone").build();
-
-        // when + then
-        mockMvc.perform(MockMvcRequestBuilders.post("/clients") //
-                .contentType(MediaType.APPLICATION_JSON) //
-                .content(mapper.writeValueAsString(request))) // Executa
-                .andDo(MockMvcResultHandlers.print()) // pega resultado
-                .andExpect(MockMvcResultMatchers.status().isBadRequest()); // faz a validação.
-    }
-
-    @Test
-    public void should_create_whenPostValid() throws Exception {
-        // given
-        ClientCreateRequest request = ClientCreateRequest.builder() //
-                .name("Nome").phone("987654321").data(new Date()).build();
-
-        // when + then
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/clients") //
-                .contentType(MediaType.APPLICATION_JSON) //
-                .content(mapper.writeValueAsString(request))) // Executa
-                .andDo(MockMvcResultHandlers.print()) // pega resultado
-                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn(); // faz a validação.
-
-        ClientResponse response = mapper.readValue(result.getResponse().getContentAsString(), ClientResponse.class);
-
-        assertNotNull(response.getId());
-        assertEquals(request.getName(), response.getName());
-        assertEquals(request.getPhone(), response.getPhone());
+                .andExpect(MockMvcResultMatchers.status().isOk()); // faz a validação.
     }
 } 
